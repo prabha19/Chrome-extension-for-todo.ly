@@ -1,0 +1,209 @@
+<html>
+<head>
+<style>
+body {
+  min-width:500px;
+  overflow-x:hidden;
+}
+
+div{
+	font:Thahoma;
+	font-size:12;
+}
+</style>
+<script type="text/javascript" src="mybase64.js"></script>
+<script type="text/javascript" src="json.js"></script>
+ <script type="text/javascript" src="jquery.min.js"></script>
+  <script type="text/javascript" src="linkyfy.js"></script>
+<script>
+/*function listProjects(req){
+	var projList = "";
+	var projectsJson = eval( req.responseText);
+	alert( req.responseText );
+	for ( i in projectsJson){
+		projList = projList+"<br>"+projectsJson[i].Content;
+	}
+	document.getElementById("projects").innerHTML = projList;
+}
+
+
+
+function getProjects(){
+	var xhr = new XMLHttpRequest();
+	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	//alert( auth );
+	xhr.onreadystatechange = function(data) {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              listProjects(xhr);
+            }  
+          }
+        }
+	xhr.open(
+    "GET",
+    "https://todo.ly/api/projects.json",
+    true);
+	xhr.setRequestHeader('Authorization', auth);
+	xhr.send(null);
+}
+*/
+
+function openmytab(myurl){
+	chrome.tabs.create({url: myurl});
+}
+
+function make_base_auth(user, password)
+{
+    var tok = user + ':' + password;
+    var hash = Base64.encode(tok);
+    return "Basic " + hash;
+}
+/*var myjson ={"Content":"hi how are you","Icon":4};
+function createProject(){
+	
+	var xhr = new XMLHttpRequest();
+	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	
+	xhr.onreadystatechange = function(data) {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              alertUser();
+            } 
+          }
+        }
+	xhr.open(
+    "POST",
+    "https://todo.ly/api/projects.json",
+    true);
+	xhr.setRequestHeader('Authorization', auth);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	//xhr.setRequestHeader("Content-length", myjson.length);
+	xhr.send(myjson.toJSONString());
+}
+
+function alertUser(){
+	alert( "Task Completed");
+}
+*/
+function getAllItems(compltedItems){
+	
+	var xhr = new XMLHttpRequest();
+	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	//alert( auth );
+	xhr.onreadystatechange = function(data) {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              listItems(xhr,compltedItems);
+            } 
+          }
+        }
+	xhr.open(
+    "GET",
+    "https://todo.ly/api/items.json",
+    true);
+	xhr.setRequestHeader('Authorization', auth);
+	xhr.send(null);
+}
+
+function listItems(req,completedItems){
+	var projList = "";
+	var bool = false;
+	var projectsJson = eval( req.responseText);
+	for ( i in projectsJson){
+			
+		if( completedItems ){
+			bool = projectsJson[i].Checked
+		} else {
+			bool = !projectsJson[i].Checked
+		}
+		if( projectsJson[i].Content != undefined && bool){
+			projList = projList+"<br>"+createItemRow(projectsJson[i]);//.Content+" "+projectsJson[i].Checked;
+		}
+	}
+	document.getElementById("projects").innerHTML = projList;
+}
+
+function createItemRow(item){
+	
+	var itemChecked = "";
+	if(item.Checked){
+		itemChecked = "checked";
+	};
+	var rowText ="";
+	var itemId = item.Id;
+	//alert( linkify(item.Content ));
+	rowText ="<input type ='checkbox' "+ itemChecked +" id='"+itemId+"' name='"+itemId+"' onclick='setCompleted("+itemId+")'>&nbsp;"+linkify(item.Content );
+	return rowText;
+	
+}
+
+function setCompleted(itemId){
+	var elem = document.getElementById(itemId);
+	if( elem.checked ){
+		submitCompletedItem( itemId ,true);
+	} else {
+		submitCompletedItem( itemId ,false);
+	}
+}
+
+
+function submitCompletedItem(itemId,mybool){
+	var completedJson ="{\"Checked\":\""+mybool+"\"}";
+	var xhr = new XMLHttpRequest();
+	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	
+	xhr.onreadystatechange = function(data) {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              getAllItems(false);
+            } 
+          }
+        }
+	xhr.open(
+    "POST",
+    "https://todo.ly/api/items/"+itemId+".json",
+    true);
+	xhr.setRequestHeader('Authorization', auth);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	//xhr.setRequestHeader("Content-length", myjson.length);
+	xhr.send(completedJson);
+}
+	
+
+function addItemToProj(projId){
+	var newItemVal = document.getElementById("newItem").value;
+	var newItemText = "{\"Content\":\""+newItemVal+"\",\"ProjectId\":"+projId+"}";
+	var xhr = new XMLHttpRequest();
+	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	
+	xhr.onreadystatechange = function(data) {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              getAllItems(false);
+			  document.getElementById("newItem").value ="";
+            } 
+          }
+        }
+	xhr.open(
+    "POST",
+    "https://todo.ly/api/items.json",
+    true);
+	xhr.setRequestHeader('Authorization', auth);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send(newItemText);
+}
+
+getAllItems(false);
+</script>
+</head>
+<body>
+<div id="title_text"></div>
+<!--<input type="button" id="project" name="project" value="Get All Projects" onclick="getProjects()">
+<input type="button" id="createProject" name="createProject" value="Create Project" onclick="createProject()">
+<input type="button" id="getAllItems1" name="getAllItems1" value="Get All Items" onclick="getAllItems()">-->
+<input type="text" name="newItem" id="newItem" size=40 value=""> 
+<input type="button" id="addItem" name="addItem" value="Add Item" onclick="addItemToProj(87011)">
+<input type="button" value="Get Finished Item" onclick="getAllItems(true);">
+<div id="projects"></div>
+
+</body>

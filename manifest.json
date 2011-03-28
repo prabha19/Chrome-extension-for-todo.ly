@@ -1,0 +1,13 @@
+{
+  "name": "todo.ly Extension",
+  "version": "1.0",
+  "description": "Chrome extension to todo.ly.",
+  "browser_action": {
+    "default_icon": "icon.png",
+	"popup": "popup.html"
+  },
+  "permissions": [
+    "https://todo.ly/api/",
+	"geolocation" 
+  ]
+}

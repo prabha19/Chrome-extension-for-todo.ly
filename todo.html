@@ -1,0 +1,105 @@
+<html>
+
+<head>
+
+ <script type="text/javascript" src="mybase64.js"></script>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+
+<script>
+
+//Authentication and Request
+function _ajax_request(url, data, callback, type, method)
+{
+    auth = make_base_auth("<todo.ly username>", "<pwd>");
+    
+    if (jQuery.isFunction(data))
+    {
+        callback = data;
+        data = {};
+    }
+    return jQuery.ajax({
+        type: method,
+        url: url,
+        data: data,
+        beforeSend : function(req) {
+           req.setRequestHeader('Authorization', auth);
+        },
+        success: callback,
+        dataType: type
+    });
+}
+function make_base_auth(user, password)
+{
+    var tok = user + ':' + password;
+    var hash = Base64.encode(tok);
+    return "Basic " + hash;
+}
+//To Extend jQuery use these functions.
+jQuery.extend({
+    get_: function(url, data, callback, type)
+    {
+        return _ajax_request(url, data, callback, type, 'GET');
+    },
+    put_: function(url, data, callback, type)
+    {
+        return _ajax_request(url, data, callback, type, 'PUT');
+    },
+    post_: function(url, data, callback, type)
+    {
+        return _ajax_request(url, data, callback, type, 'POST');
+    },
+    delete_: function(url, data, callback, type)
+    {
+        return _ajax_request(url, data, callback, type, 'DELETE');
+    }
+});
+var myjson =[{"Content":"hi how are you","Icon":4}];
+
+function call(){
+	/*var mytextval = document.getElementById("mytext").value;
+	var value = Base64.encode(mytextval);
+	
+	
+	alert( value );
+	value = Base64.decode(value);
+	
+	alert( value );*/
+	
+	//to list all projects
+	_ajax_request("https://todo.ly/api/projects.json", "", mycallback, "JSON", "GET");//https://todo.ly/api/projects.json
+	//_ajax_request("https://todo.ly/api/projects/87011/items.json", "", mycallback, "json", "get");//https://todo.ly/api/projects/[id]/items.format
+	
+	
+}
+
+function createProject(){
+	alert( "::::");
+	_ajax_request("https://todo.ly/api/projects.json", myjson, mycallback, "JSON", "POST");//https://todo.ly/api/projects.format
+}
+
+function mycallback(value){
+	alert(value);
+	projcount = value.length;
+	//alert( projcount );
+	
+	for( i=0; i < projcount; i++){
+		alert( value[i].Id+" ---- " +value[i].Content);
+	}
+	
+}
+</script>
+</head>
+
+<body>
+
+<input type='text' id="mytext" value="">
+
+<input type='text' id="uname" value="">
+<input type='password' id="pwd" value="">
+
+<input type="button" value="View Project" onclick="call()">
+<input type="button" value="Create Project" onclick="createProject()">
+
+
+</body>
+</html>
