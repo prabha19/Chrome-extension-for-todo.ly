@@ -1,17 +1,76 @@
+
+<!DOCTYPE html>
+
 <html>
-  <head>
-    <title>Options</title>
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <title>Options</title>
+
+        <link type="text/css" rel="stylesheet" href="options.css">
+
     <script>
-	
+		function saveCredential(){
+			uName = document.getElementById('username').value;
+			pwd = document.getElementById('pwd').value;
+			localStorage["todoUserName"] = uName;
+			localStorage["todoPassword"] = pwd;
+			document.getElementById('noticeSaved').style.display="block";
+			document.getElementById('noticeCleared').style.display="none";
+		}
+		
+		function clearCredential(){
+			localStorage.removeItem("todoUserName");
+			localStorage.removeItem("todoPassword");
+			document.getElementById('noticeSaved').style.display="none";
+			document.getElementById('noticeCleared').style.display="block";
+		}
 	</script>
-  </head>
-  <body onload="initUI();">
-  
-  </body>
-  TODO.LY Username : <input type="text" id="u_name" ><br>
-  
-  TODO.LY Password : <input type="password" id="pwd" ><br>
-  
-  <input type = "button" value="Save" onclick="saveCredentials();">
-  
-  </html>
+    </head>
+
+    <body >
+
+       
+    <div id="main">
+
+	<header>
+
+    	<h1>TODO.LY Options</h1>
+
+    </header>
+
+    <div id="content">
+
+	<fieldset>
+
+		<legend><b>Login to todo.ly</b></legend>
+		
+		<input id="username" type="text"><label for="username">User Name</label> <br>
+		<input id="pwd" type="password"><label for="pwd">Password</label>
+		     
+
+        
+
+	</fieldset>
+
+    
+
+    </div>
+
+    <div id="buttonRow">
+
+        <b id="noticeSaved" style="display:none">Saved!</b>
+		<b id="noticeCleared" style="display:none">Cleared!</b>
+        <input id="btnSave" type="button" value="Save" onclick='saveCredential()'/>
+
+        <input id="btnCancel" type="button" value="Clear Credentials" onclick='clearCredential()'/>
+
+    </div>
+
+    </div><!--main-->
+
+    </body>
+
+</html>

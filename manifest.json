@@ -1,7 +1,8 @@
 {
   "name": "todo.ly Extension",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Chrome extension to todo.ly.",
+  "options_page": "options.html",
   "browser_action": {
     "default_icon": "icon.png",
 	"popup": "popup.html"

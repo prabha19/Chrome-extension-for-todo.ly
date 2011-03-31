@@ -52,9 +52,14 @@ function openmytab(myurl){
 	chrome.tabs.create({url: myurl});
 }
 
-function make_base_auth(user, password)
+function make_base_auth()
 {
-    var tok = user + ':' + password;
+    user = localStorage["todoUserName"];
+	password = localStorage["todoPassword"];
+	if( user == undefined ){
+		alert("Please set your username and password in options page");
+	}
+	var tok = user + ':' + password;
     var hash = Base64.encode(tok);
     return "Basic " + hash;
 }
@@ -88,7 +93,7 @@ function alertUser(){
 function getAllItems(compltedItems){
 	
 	var xhr = new XMLHttpRequest();
-	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	var auth = make_base_auth();
 	//alert( auth );
 	xhr.onreadystatechange = function(data) {
           if (xhr.readyState == 4) {
@@ -150,7 +155,7 @@ function setCompleted(itemId){
 function submitCompletedItem(itemId,mybool){
 	var completedJson ="{\"Checked\":\""+mybool+"\"}";
 	var xhr = new XMLHttpRequest();
-	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	var auth = make_base_auth();
 	
 	xhr.onreadystatechange = function(data) {
           if (xhr.readyState == 4) {
@@ -174,7 +179,7 @@ function addItemToProj(projId){
 	var newItemVal = document.getElementById("newItem").value;
 	var newItemText = "{\"Content\":\""+newItemVal+"\",\"ProjectId\":"+projId+"}";
 	var xhr = new XMLHttpRequest();
-	var auth = make_base_auth("prabha19@yahoo.com", "roserose");
+	var auth = make_base_auth();
 	
 	xhr.onreadystatechange = function(data) {
           if (xhr.readyState == 4) {
