@@ -7,11 +7,10 @@
 
         <meta charset="UTF-8">
 
-        <title>Options</title>
+        <title>Todo list Options</title>
 
         <link type="text/css" rel="stylesheet" href="options.css">
-
-    <script>
+	<script>
 		function saveCredential(){
 			uName = document.getElementById('username').value;
 			pwd = document.getElementById('pwd').value;
@@ -37,7 +36,7 @@
 
 	<header>
 
-    	<h1>TODO.LY Options</h1>
+    	<h1>Todo list Options</h1>
 
     </header>
 
@@ -54,13 +53,12 @@
         
 
 	</fieldset>
-
-    
-
+	<br>
+	<b id="register" ><a href='http://todo.ly'>Register with todo.ly</a></b>
     </div>
 
     <div id="buttonRow">
-
+		
         <b id="noticeSaved" style="display:none">Saved!</b>
 		<b id="noticeCleared" style="display:none">Cleared!</b>
         <input id="btnSave" type="button" value="Save" onclick='saveCredential()'/>
